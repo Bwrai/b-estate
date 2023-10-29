@@ -2,10 +2,12 @@ import express from "express";
 import mongoose from "mongoose";
 import dotEnv from 'dotenv';
 import userRouter from './routes/userRoutes.js'
+import authRouter from './routes/authRoute.js';
 
 dotEnv.config()
 
 const app = express();
+app.use(express.json())
 const PORT = process.env.PORT || 3000;
 
 
@@ -23,4 +25,5 @@ app.listen(PORT, () => {
     console.log(`Listening on PORT ${PORT}`)
 })
 
-app.use('/api/user', userRouter)
+app.use('/api/user', userRouter);
+app.use('/api/auth', authRouter);
