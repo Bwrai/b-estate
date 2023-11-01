@@ -43,27 +43,33 @@ export default function SignUp() {
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7 text-blue-800">Sign Up</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form name="signUp" onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           id="username"
+          name="username"
           type="text"
           placeholder="username"
           className="border p-2 rounded-lg"
           onChange={handleChange}
+          autoComplete="username"
         />
         <input
           id="email"
+          name="email"
           type="email"
           placeholder="email"
           className="border p-2 rounded-lg"
           onChange={handleChange}
+          autoComplete="email"
         />
         <input
           id="password"
+          name="password"
           type="password"
           placeholder="password"
           className="border p-2 rounded-lg text-justify"
           onChange={handleChange}
+          autoComplete="current-password"
         />
         <button
           disabled={loading}
