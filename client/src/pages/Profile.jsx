@@ -118,10 +118,3 @@ export default function Profile() {
     </div>
   );
 }
-
-// const handleFileChange = (event) => {
-//   const selectedFile = event.target.files[0];
-//   if(selectedFile) {
-//     uploadFile(selectedFile)
-//   }
-// }
