@@ -16,7 +16,6 @@ export default function Profile() {
   const [uploadError, setUploadError] = useState(false);
   const [formData, setFormData] = useState({});
 
-
   // firebase storage rules
   // allow read;
   //     allow write: if
@@ -29,8 +28,9 @@ export default function Profile() {
   }, [file]);
 
   const handleFileUpload = (file) => {
+    const timestamp = new Date().getTime();
+    const filename = `${timestamp}_${file.name}`;
     const storage = getStorage(app);
-    const filename = new Date().getTime() + file.name;
     const storageRef = ref(storage, filename);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -43,12 +43,18 @@ export default function Profile() {
       },
 
       (error) => {
+        console.error("Error uploading file", error);
         setUploadError(true);
       },
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
-          setFormData({ ...formData, avatar: downloadUrl });
-        });
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then((downloadUrl) => {
+            setFormData({ ...formData, avatar: downloadUrl });
+          })
+          .catch((error) => {
+            console.error("Error getting download Url", error);
+            setUploadError(true);
+          });
       }
     );
   };
@@ -112,3 +118,10 @@ export default function Profile() {
     </div>
   );
 }
+
+// const handleFileChange = (event) => {
+//   const selectedFile = event.target.files[0];
+//   if(selectedFile) {
+//     uploadFile(selectedFile)
+//   }
+// }
