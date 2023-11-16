@@ -30,3 +30,20 @@ export const updateUser = async (req, res, next) => {
         next(error)
     }
 }
+
+export const deleteUser = async (req, res, next) => {
+    const userId = req.params.id;
+    try {
+        if (req.user.id !== userId) {
+            throw errorHandler(401, "Unauthorized access, Cannot delete others account")
+        }
+        const deletedUser = await User.findByIdAndDelete(userId);
+        if (!deletedUser) {
+            throw errorHandler(404, "User not found");
+        }
+        res.clearCookie('access_token');
+        res.status(200).json({ message: 'User has been deleted successfully!' })
+    } catch (error) {
+        next(error)
+    }
+}
