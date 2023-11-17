@@ -13,6 +13,9 @@ import {
   deleteUserFailure,
   deleteUserStart,
   deleteUserSuccess,
+  signOutUserStart,
+  signOutUserFailure,
+  signOutUserSuccess,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { app } from "../firebase";
@@ -111,8 +114,23 @@ export default function Profile() {
       }
       dispatch(deleteUserSuccess(data));
     } catch (error) {
-      console.error("An error occurred while deleting user:", error)
+      console.error("An error occurred while deleting user:", error);
       dispatch(deleteUserFailure("An error occurred while deleting user"));
+    }
+  };
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch("api/auth/signout");
+      const data = await res.json();
+      if (!data.success) {
+        dispatch(signOutUserFailure());
+        return;
+      }
+      dispatch(signOutUserSuccess())
+    } catch (error) {
+      dispatch(signOutUserFailure());
+
     }
   };
 
@@ -183,7 +201,9 @@ export default function Profile() {
         >
           Delete account
         </span>
-        <span className="text-red-700 cursor-pointer">Sign out</span>
+        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">
+          Sign out
+        </span>
       </div>
       <p className="text-red-600 mt-2">{error ? error : ""}</p>
       <p className="text-green-700 mt-2">
