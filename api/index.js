@@ -4,6 +4,7 @@ import dotEnv from 'dotenv';
 import userRouter from './routes/userRoutes.js'
 import authRouter from './routes/authRoute.js';
 import cookieParser from "cookie-parser";
+import listingRouter from './routes/listingRoute.js';
 
 dotEnv.config()
 
@@ -29,6 +30,7 @@ app.listen(PORT, () => {
 
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/listing', listingRouter)
 
 // Error Handling middleware
 app.use((err, req, res, next) => {
