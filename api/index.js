@@ -5,18 +5,21 @@ import userRouter from './routes/userRoutes.js'
 import authRouter from './routes/authRoute.js';
 import cookieParser from "cookie-parser";
 import listingRouter from './routes/listingRoute.js';
+import path from 'path';
 
 dotEnv.config()
 
+const _dirname = path.resolve();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 const PORT = process.env.PORT || 3000;
 
 
+
 async function mongoConnection() {
     try {
-        await mongoose.connect('mongodb://127.0.0.1:27017/myapp');
+        await mongoose.connect(process.env.MONGO_URI);
         console.log("DATABASE CONNECTED")
     } catch (err) {
         console.error("MONGO CONNECTION FAILED", err)
@@ -31,6 +34,12 @@ app.listen(PORT, () => {
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter)
+
+app.use(express.static(path.join(_dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(_dirname, 'client', 'dist', 'index.html'));
+})
 
 // Error Handling middleware
 app.use((err, req, res, next) => {
