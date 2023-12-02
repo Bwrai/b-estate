@@ -10,7 +10,7 @@ export default function ListingItem({ listing }) {
     >
       <Link to={`/listing/${listing._id}`}>
         <img
-          className="h-[250px] sm:h-[220px] w-full object-cover 
+          className="h-[220px] sm:h-[200px] w-full object-cover 
             hover:scale-105 transition-scale duration-300"
           src={listing.imageUrls[0]}
           alt="listing cover"
